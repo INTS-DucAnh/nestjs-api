@@ -1,28 +1,16 @@
-import logger from '@NestJS/logger';
-import { Controller, Get } from '@nestjs/common';
+import logger from 'src/shared/logger';
+import { Controller, Get, Query } from '@nestjs/common';
 import { success } from 'src/shared/result';
+import { FindReq, RoleEnum } from '~/common';
+import { UserService } from './user.service';
+import { Result } from '~/shared/types';
 
 @Controller('user')
 export class UserController {
-    constructor() {}
+     constructor(private readonly userService: UserService) {}
 
-    private user = {
-        page: '1',
-        size: '10',
-        totalPage: '1',
-        data: [
-            {
-                name: 'hduong',
-                age: 23,
-                email: 'hduong25@gmail.com',
-                adress: 'bg',
-            },
-        ],
-    };
-
-    @Get()
-    async get() {
-        logger.info('aa');
-        return success.ok(this.user);
-    }
+     @Get()
+     async get(@Query() params: FindReq): Promise<Result> {
+          return this.userService.getAll(params);
+     }
 }
