@@ -3,6 +3,7 @@ import { Message } from './message.type';
 
 export interface ResultSuccess {
     status: HttpStatus;
+    message?: Message;
     code?: string;
     data: any;
 }

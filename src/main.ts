@@ -2,7 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { configs } from './configs';
-import logger from './shared/logger/logger';
+import logger from '@NestJS/logger';
 
 async function bootstrap() {
     const app = await NestFactory.create<NestExpressApplication>(AppModule, {
@@ -13,6 +13,11 @@ async function bootstrap() {
     const host = configs.app.host;
     const port = configs.app.port;
     const prefix: string = configs.app.prefix;
+
+    logger.config({
+        module: 'app',
+        ...configs.log,
+    });
 
     app.setGlobalPrefix(prefix);
 

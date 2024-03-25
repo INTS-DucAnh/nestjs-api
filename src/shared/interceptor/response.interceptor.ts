@@ -1,0 +1,41 @@
+import {
+    CallHandler,
+    ExecutionContext,
+    Injectable,
+    NestInterceptor,
+} from '@nestjs/common';
+import { Request, Response } from 'express';
+import { Observable, map } from 'rxjs';
+import { Result, ResultError, ResultSuccess } from '../types';
+import { TResponse } from '../types/response.type';
+import { HttpStatus } from 'src/common';
+
+@Injectable()
+export class HandleResponse implements NestInterceptor {
+    intercept(
+        context: ExecutionContext,
+        next: CallHandler,
+    ): Observable<any> | Promise<Observable<any>> {
+        return next.handle().pipe(
+            map((data: Result): TResponse => {
+                let responseData: any;
+                const status: HttpStatus =
+                    data.status ?? HttpStatus.BAD_REQUEST;
+                if (status > 200) {
+                    const code: string = data.code ?? '';
+                    let resultError = data as ResultError;
+                    responseData = {
+                        status: status,
+                        code: code,
+                        message: resultError.message,
+                        errors: resultError.errors,
+                    };
+                }
+
+                let resultSuccess = responseData as ResultSuccess;
+                responseData = resultSuccess.data ?? resultSuccess;
+                return responseData;
+            }),
+        );
+    }
+}
