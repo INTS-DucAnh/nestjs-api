@@ -4,7 +4,10 @@ import 'winston-daily-rotate-file';
 import { LoggerConfigurations } from './config';
 import { LogstashTransport } from './transport';
 
-function getTransports(configs?: LoggerConfigurations): Transport[] {
+function getTransports(
+    configs?: LoggerConfigurations,
+    modules?: string,
+): Transport[] {
     const fileEnabled = configs?.logFileEnabled === 'true' ? true : false;
     const logstashEnabled = configs?.logstashEnabled === 'true' ? true : false;
     const logsPath = configs?.folderLogsPath || 'logs';
@@ -58,15 +61,17 @@ function getTransports(configs?: LoggerConfigurations): Transport[] {
             port: Number(logstashPort),
             protocol: logstashProtocol as 'udp' | 'tcp',
             handleExceptions: true,
-            module: configs.module,
+            module: modules,
         });
         transports.push(transport);
     }
     return transports;
 }
 
-function getOptions(configs?: LoggerConfigurations): LoggerOptions {
-    const module = `[module:${configs?.module}]` ?? '';
+function getOptions(
+    configs?: LoggerConfigurations,
+    modules?: string,
+): LoggerOptions {
     return {
         format: winston.format.combine(
             winston.format.splat(),
@@ -78,7 +83,7 @@ function getOptions(configs?: LoggerConfigurations): LoggerOptions {
                 if (info.tags && Array.isArray(info.tags)) {
                     tags = info.tags.map((t) => `[${t}]`).join('');
                 }
-                return `${info.timestamp} [${info.level}]${module}${tags}: ${info.message}`;
+                return `${info.timestamp} [${info.level}]${`[module:${modules}]` ?? ''}${tags}: ${info.message}`;
             }),
         ),
         transports: getTransports(configs),
@@ -94,9 +99,13 @@ declare module 'winston' {
 
 function setConfiguration(
     this: winston.Logger,
-    configs: LoggerConfigurations,
+    params: {
+        configs?: LoggerConfigurations;
+        modules?: string;
+    },
 ): void {
-    const options = getOptions(configs);
+    const module = params.modules ?? 'app';
+    const options = getOptions(params.configs, module);
     this.configure(options);
 }
 

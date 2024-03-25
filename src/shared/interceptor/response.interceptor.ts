@@ -4,7 +4,6 @@ import {
     Injectable,
     NestInterceptor,
 } from '@nestjs/common';
-import { Request, Response } from 'express';
 import { Observable, map } from 'rxjs';
 import { Result, ResultError, ResultSuccess } from '../types';
 import { TResponse } from '../types/response.type';
@@ -32,8 +31,13 @@ export class HandleResponse implements NestInterceptor {
                     };
                 }
 
-                let resultSuccess = responseData as ResultSuccess;
+                let resultSuccess = data as ResultSuccess;
                 responseData = resultSuccess.data ?? resultSuccess;
+                responseData = {
+                    status: resultSuccess.status,
+                    code: resultSuccess.code,
+                    result: { ...resultSuccess.data },
+                };
                 return responseData;
             }),
         );
