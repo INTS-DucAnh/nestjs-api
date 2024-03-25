@@ -1,26 +1,34 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { UserModule } from './modules/user/user.module';
 import { CategoryModule } from './modules/category/category.module';
 import { PostModule } from './modules/post/post.module';
-import { RoleModule } from './modules/role/role.module';
 import { PostCategoryModule } from './modules/post-category/post-category.module';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { HandleResponse } from './shared/interceptor/response.interceptor';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { withCache } from './configs';
+import { AuthModule } from './modules/auth/auth.module';
+import { RequestInitialization } from './shared/middleware/request.Initialization';
 
 @Module({
-    imports: [
-        UserModule,
-        CategoryModule,
-        PostModule,
-        RoleModule,
-        PostCategoryModule,
-    ],
-    controllers: [],
-    providers: [
-        {
-            provide: APP_INTERCEPTOR,
-            useClass: HandleResponse,
-        },
-    ],
+     imports: [
+          TypeOrmModule.forRoot(withCache),
+          UserModule,
+          CategoryModule,
+          PostModule,
+          PostCategoryModule,
+          AuthModule,
+     ],
+     controllers: [],
+     providers: [
+          {
+               provide: APP_INTERCEPTOR,
+               useClass: HandleResponse,
+          },
+     ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+     configure(consumer: MiddlewareConsumer) {
+          consumer.apply(RequestInitialization).forRoutes('*');
+     }
+}

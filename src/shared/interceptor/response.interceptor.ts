@@ -1,45 +1,64 @@
-import {
-    CallHandler,
-    ExecutionContext,
-    Injectable,
-    NestInterceptor,
-} from '@nestjs/common';
+import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nestjs/common';
 import { Observable, map } from 'rxjs';
-import { Result, ResultError, ResultSuccess } from '../types';
-import { TResponse } from '../types/response.type';
 import { HttpStatus } from 'src/common';
+import { Result, ResultError, ResultSuccess, TResponse } from '../types';
+import logger from '../logger';
 
 @Injectable()
 export class HandleResponse implements NestInterceptor {
-    intercept(
-        context: ExecutionContext,
-        next: CallHandler,
-    ): Observable<any> | Promise<Observable<any>> {
-        return next.handle().pipe(
-            map((data: Result): TResponse => {
-                let responseData: any;
-                const status: HttpStatus =
-                    data.status ?? HttpStatus.BAD_REQUEST;
-                if (status > 200) {
-                    const code: string = data.code ?? '';
-                    let resultError = data as ResultError;
-                    responseData = {
-                        status: status,
-                        code: code,
-                        message: resultError.message,
-                        errors: resultError.errors,
-                    };
-                }
+     intercept(context: ExecutionContext, next: CallHandler): Observable<any> | Promise<Observable<any>> {
+          return next.handle().pipe(
+               map((data: Result): TResponse => {
+                    const request = context.switchToHttp().getRequest();
+                    let responseData: any;
+                    const status: HttpStatus = data.status ?? HttpStatus.BAD_REQUEST;
+                    if (status > 200) {
+                         const code: string = data.code ?? '';
+                         let resultError = data as ResultError;
+                         responseData = {
+                              status: status,
+                              code: code,
+                              message: resultError.message,
+                              errors: resultError.errors,
+                         };
+                    }
 
-                let resultSuccess = data as ResultSuccess;
-                responseData = resultSuccess.data ?? resultSuccess;
-                responseData = {
-                    status: resultSuccess.status,
-                    code: resultSuccess.code,
-                    result: { ...resultSuccess.data },
-                };
-                return responseData;
-            }),
-        );
-    }
+                    let resultSuccess = data as ResultSuccess;
+                    responseData = resultSuccess.data ?? resultSuccess;
+                    responseData = {
+                         status: resultSuccess.status,
+                         code: resultSuccess.code,
+                         result: { ...resultSuccess.data },
+                    };
+
+                    const correlationId = request.correlation_id;
+                    const request_id = request.request_id;
+                    logResponse(request_id, status, correlationId, responseData, request.body);
+
+                    return responseData;
+               }),
+          );
+     }
 }
+
+const logResponse = (
+     request_id: string,
+     status_code: HttpStatus,
+     body: any,
+     correlation_id?: string,
+     response_data?: any,
+): void => {
+     const response_time = new Date();
+     const data = {
+          request_id,
+          correlation_id,
+          response_time,
+          status_code,
+          response_data,
+          body,
+     };
+
+     logger.info(JSON.stringify(data), {
+          tags: ['response'],
+     });
+};
