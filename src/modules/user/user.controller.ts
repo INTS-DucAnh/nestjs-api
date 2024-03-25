@@ -22,6 +22,7 @@ export class UserController {
 
     @Get()
     async get() {
+        logger.info('aa');
         return success.ok(this.user);
     }
 }

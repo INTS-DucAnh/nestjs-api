@@ -4,6 +4,8 @@ import { CategoryModule } from './modules/category/category.module';
 import { PostModule } from './modules/post/post.module';
 import { RoleModule } from './modules/role/role.module';
 import { PostCategoryModule } from './modules/post-category/post-category.module';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { HandleResponse } from './shared/interceptor/response.interceptor';
 
 @Module({
     imports: [
@@ -14,6 +16,11 @@ import { PostCategoryModule } from './modules/post-category/post-category.module
         PostCategoryModule,
     ],
     controllers: [],
-    providers: [],
+    providers: [
+        {
+            provide: APP_INTERCEPTOR,
+            useClass: HandleResponse,
+        },
+    ],
 })
 export class AppModule {}

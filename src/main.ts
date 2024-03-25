@@ -14,10 +14,7 @@ async function bootstrap() {
     const port = configs.app.port;
     const prefix: string = configs.app.prefix;
 
-    logger.config({
-        module: 'app',
-        ...configs.log,
-    });
+    logger.config({ configs: configs.log });
 
     app.setGlobalPrefix(prefix);
 

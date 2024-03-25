@@ -1,5 +1,4 @@
 export interface LoggerConfigurations {
-    module?: string;
     logFileEnabled?: string;
     folderLogsPath?: string;
 
