@@ -9,7 +9,7 @@ export const withCache: TypeOrmModuleOptions = {
      username: type === 'mysql' ? process.env.USER_MYSQL : process.env.USER_POSTGRES,
      password: type === 'mysql' ? process.env.PASS_MYSQL : process.env.PASS_POSTGRES,
      database: type === 'mysql' ? process.env.DB_NAME_MYSQL : process.env.DB_NAME_POSTGRES,
-     synchronize: false,
+     synchronize: true,
      entities: [`${__dirname}/../**/*.entity.{ts,js}`],
      dropSchema: false,
 };

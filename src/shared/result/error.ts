@@ -1,11 +1,12 @@
 import { ErrorCodeEnum, HttpStatus } from 'src/common';
 import { Message, ResultError } from '../types';
+import { HttpException } from '@nestjs/common';
 
-export const exists = (param: Message): ResultError => {
+export const exists = (value: Message): ResultError => {
      return {
           status: HttpStatus.BAD_REQUEST,
           code: ErrorCodeEnum.ALREADY_EXISTS,
-          message: `${param} already exists`,
+          message: `${value} already exists`,
      };
 };
 

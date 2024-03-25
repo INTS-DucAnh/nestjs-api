@@ -9,6 +9,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { withCache } from './configs';
 import { AuthModule } from './modules/auth/auth.module';
 import { RequestInitialization } from './shared/middleware/request.Initialization';
+import { MailModule } from './modules/mail/mail.module';
 
 @Module({
      imports: [
@@ -18,6 +19,7 @@ import { RequestInitialization } from './shared/middleware/request.Initializatio
           PostModule,
           PostCategoryModule,
           AuthModule,
+          MailModule,
      ],
      controllers: [],
      providers: [

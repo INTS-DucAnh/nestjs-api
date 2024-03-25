@@ -12,28 +12,27 @@ export class HandleResponse implements NestInterceptor {
                     const request = context.switchToHttp().getRequest();
                     let responseData: any;
                     const status: HttpStatus = data.status ?? HttpStatus.BAD_REQUEST;
+
                     if (status > 200) {
-                         const code: string = data.code ?? '';
-                         let resultError = data as ResultError;
+                         const resultError = data as ResultError;
                          responseData = {
                               status: status,
-                              code: code,
+                              code: resultError.code ?? '',
                               message: resultError.message,
                               errors: resultError.errors,
                          };
+                    } else {
+                         const resultSuccess = data as ResultSuccess;
+                         responseData = {
+                              status: resultSuccess.status,
+                              code: resultSuccess.code,
+                              result: { ...resultSuccess.data },
+                         };
                     }
-
-                    let resultSuccess = data as ResultSuccess;
-                    responseData = resultSuccess.data ?? resultSuccess;
-                    responseData = {
-                         status: resultSuccess.status,
-                         code: resultSuccess.code,
-                         result: { ...resultSuccess.data },
-                    };
 
                     const correlationId = request.correlation_id;
                     const request_id = request.request_id;
-                    logResponse(request_id, status, correlationId, responseData, request.body);
+                    logResponse(request_id, status, request.body, correlationId, responseData);
 
                     return responseData;
                }),

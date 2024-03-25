@@ -1,11 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from './entity/user.entity';
-import { FindManyOptions, Like, Repository } from 'typeorm';
+import { DeepPartial, FindManyOptions, Like, Repository } from 'typeorm';
 import { FindReq } from '~/common';
 import { configs } from '~/configs';
-import { success } from '~/shared/result';
+import { errors, success } from '~/shared/result';
 import { Result } from '~/shared/types';
+import { CreateUserBody } from './dto/user.body';
 
 @Injectable()
 export class UserService {
@@ -42,7 +43,13 @@ export class UserService {
           });
      }
 
-     async create() {
-          
+     async create(params: CreateUserBody): Promise<Result> {
+          const check: UserEntity = await this.userRepository.findOne({ where: { email: params.email } });          
+          if (check) {
+               return errors.exists('email');
+          }
+          const newUser: UserEntity = this.userRepository.create(params);
+          await this.userRepository.save(newUser);
+          return success.created(newUser);
      }
 }
