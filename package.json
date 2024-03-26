@@ -6,7 +6,7 @@
      "private": true,
      "license": "UNLICENSED",
      "scripts": {
-          "build": "nest build",
+          "build": "rimraf ./build && tsc && tsc-alias",
           "format": "npx prettier --write \"!**/build\" \"**/*.{ts,tsx,md,js,json}\"",
           "start": "nest start",
           "start:dev": "nodemon",

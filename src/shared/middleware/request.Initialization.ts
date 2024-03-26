@@ -2,6 +2,8 @@ import { Injectable, NestMiddleware } from '@nestjs/common';
 import { NextFunction, Request, Response } from 'express';
 import logger from '../logger';
 import * as uuid from 'uuid';
+import { mask } from '../mask/mask';
+import { ILoggerReponse, loggerResponse } from '../logger/logger.response';
 
 export interface Payload {
      id: string;
@@ -27,7 +29,8 @@ export class RequestInitialization implements NestMiddleware {
           const timeNow = new Date();
           req.request_id = uuid.v1();
           const body = JSON.parse(JSON.stringify(req.body));
-          
+          mask(body, ['password', 'accessToken', 'refreshToken']);
+
           //Thu thập thông tin về người gửi request như địa chỉ IP (client), tên máy chủ gửi forward (sourceHostName), tên mạng gửi forward (sourceNetName), và correlation ID từ header của request.
           const client: string | string[] = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
           const sourceHostName: string | string[] = req.headers['x-forwarded-for-hostname'] || 'unknown';
@@ -39,12 +42,13 @@ export class RequestInitialization implements NestMiddleware {
           req.correlation_id = String(correlationId);
           req.requested_time = timeNow.getTime();
 
-          const data = {
+          const data: ILoggerReponse = {
+               tags: 'request',
                sourceHostName,
                sourceNetName,
-               request_id: req.request_id,
-               correlation_id: correlationId,
-               request_time: timeNow,
+               requestId: req.request_id,
+               correlationId: correlationId,
+               requestTime: timeNow,
                requester: client,
                method: req.method,
                path: req.originalUrl,
@@ -52,10 +56,7 @@ export class RequestInitialization implements NestMiddleware {
                body,
           };
 
-          logger.info(JSON.stringify(data), {
-               tags: ['request'],
-          });
-
+          loggerResponse(data);
           next();
      }
 }

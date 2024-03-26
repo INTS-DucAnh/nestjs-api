@@ -85,4 +85,5 @@ export enum ErrorCodeEnum {
      'URL_NOT_FOUND' = 'HD0002',
      'EXCEPTION' = 'HD0003',
      'INVALID_DATA' = 'HD0004',
+     'ERROR_SEND_MAIL' = 'HD0005',
 }

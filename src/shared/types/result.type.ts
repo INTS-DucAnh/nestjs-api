@@ -1,4 +1,4 @@
-import { HttpStatus } from 'src/common';
+import { HttpStatus } from '../../common';
 import { Message } from './message.type';
 
 export interface ResultSuccess {

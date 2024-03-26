@@ -68,4 +68,12 @@ export const configs = {
           page: process.env.PAGE_DEFAULT,
           size: process.env.SIZE_DEFAULT,
      },
+
+     mail: {
+          host: process.env.MAIL_HOST,
+          user: process.env.MAIL_USER,
+          pass: process.env.MAIL_PASS,
+          path: process.env.MAIL_PATH,
+          tplCreateUser: process.env.TEMPLATES_CREATE_USER
+     },
 };

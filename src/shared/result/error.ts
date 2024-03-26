@@ -1,6 +1,5 @@
 import { ErrorCodeEnum, HttpStatus } from '../../common';
 import { Message, ResultError } from '../types';
-import { HttpException } from '@nestjs/common';
 
 export const exists = (value: Message): ResultError => {
      return {

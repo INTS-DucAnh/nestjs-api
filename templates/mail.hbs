@@ -1,0 +1,154 @@
+<html lang='en'>
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <style>
+            body,
+            h1,
+            h2,
+            h3,
+            h4,
+            h5,
+            h6,
+            ul,
+            li,
+            table,
+            th,
+            td {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+                color: black;
+            }
+
+            p {
+                color: #888888;
+            }
+
+            body {
+                font-family: Arial, sans-serif;
+                line-height: 1.6;
+            }
+
+            .email-container {
+                max-width: 600px;
+                margin: 0 auto;
+                padding: 20px;
+                border: 1px solid #ddd;
+                background-color: #fff;
+            }
+
+            .loiChao {
+                text-align: center;
+                padding-bottom: 10px;
+                border-bottom: 1px solid #ddd;
+            }
+
+            .loiChao h1 {
+                color: #338dbc;
+            }
+
+            .moDau {
+                margin-top: 20px;
+                padding: 20px;
+                background-color: #f9f9f9;
+            }
+
+            .moDau a {
+                color: #338dbc;
+                text-decoration: none;
+            }
+
+            .moDau a:hover {
+                text-decoration: underline;
+            }
+
+            .infoUser p {
+                margin-bottom: 10px;
+            }
+
+            .tablea {
+                width: 100%;
+                margin-top: 20px;
+                border-collapse: collapse;
+            }
+
+            .tablea th,
+            .tablea td {
+                padding: 10px;
+                text-align: left;
+                border-bottom: 1px solid #ddd;
+            }
+
+            .order-details p {
+                margin-top: 10px;
+            }
+
+            .email-footer {
+                margin-top: 20px;
+                padding-top: 20px;
+                border-top: 1px solid #ddd;
+                text-align: center;
+                color: #888;
+            }
+
+            .email-footer a {
+                color: #338dbc;
+                text-decoration: none;
+            }
+
+            .email-footer a:hover {
+                text-decoration: underline;
+            }
+
+            /* Bỏ gạch chân cho liên kết email */
+            .email-footer a[href^='mailto:'] {
+                text-decoration: none;
+            }
+
+            /* Làm các chữ trong bảng hiển thị to hơn */
+            .tablea {
+                width: 100%;
+                border-collapse: collapse;
+            }
+
+            .tablea th,
+            .tablea td {
+                padding: 8px;
+                text-align: left;
+                font-size: 16px; /* Điều chỉnh kích thước chữ tùy ý */
+            }
+
+            /* Hiển thị đường viền cho các ô trong bảng */
+            .tablea th,
+            .tablea td {
+                border: 1px solid #ddd;
+            }
+        </style>
+        <title>Email</title>
+    </head>
+    <body>
+        <div class="email-container">
+            <div class="loiChao">
+                <h1>hduong</h1>
+            </div>
+            <div class="moDau">
+                <h2>Xin chào <span>{{user.name}}</span>,</h2>
+                <p>hduong25 xin cập nhật cho bạn về trạng thái tạo mới tài khoản của bạn</p>
+            </div>
+
+            <h1>Thông tin tài khoản</h1>
+            <div class="infoUser">
+                <p>Tên người dùng: <span>{{user.name}}</span></p>
+                <p>Ngày tạo: <span>{{user.createDate}}</span></p>
+                <p>Email: <span>{{user.mailUser}}</span></p>
+                <p>Trạng thái: <span>Thành công</span></p>
+            </div>
+            <div class="email-footer">
+                <p>Chúng tôi rất vui vì sự có mặt của bạn</p>
+                <p>Xin chân thành cảm ơn sự quan tâm của bạn dành cho hduong25!</p>
+            </div>
+        </div>
+    </body>
+</html>

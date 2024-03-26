@@ -4,6 +4,7 @@ import * as Transport from 'winston-transport';
 import 'winston-daily-rotate-file';
 import { LoggerConfigurations } from './config';
 import { LogstashTransport } from './transport';
+import { HttpStatus } from '../../common';
 
 function getTransports(configs?: LoggerConfigurations, modules?: string): Transport[] {
      const fileEnabled = configs?.logFileEnabled === 'true' ? true : false;
