@@ -1,5 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
-import { RoleEnum } from '~/common';
+import { RoleEnum } from '../../common';
 
 @Controller('auth')
 export class AuthController {

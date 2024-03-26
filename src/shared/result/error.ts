@@ -1,4 +1,4 @@
-import { ErrorCodeEnum, HttpStatus } from 'src/common';
+import { ErrorCodeEnum, HttpStatus } from '../../common';
 import { Message, ResultError } from '../types';
 import { HttpException } from '@nestjs/common';
 

@@ -1,8 +1,8 @@
 import { Body, Controller, Get, Post, Query } from '@nestjs/common';
-import { FindReq } from '~/common';
 import { UserService } from './user.service';
-import { Result } from '~/shared/types';
 import { CreateUserBody } from './dto/user.body';
+import { FindReq } from '../../common';
+import { Result } from '../../shared/types';
 
 @Controller('user')
 export class UserController {

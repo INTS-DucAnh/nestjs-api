@@ -1,4 +1,4 @@
-import Transport from 'winston-transport';
+import * as Transport from 'winston-transport';
 import dgram from 'dgram';
 import net from 'net';
 

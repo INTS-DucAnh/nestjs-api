@@ -1,6 +1,6 @@
 {
      "compilerOptions": {
-          "module": "commonjs",
+          "module": "CommonJS",
           "declaration": true,
           "removeComments": true,
           "emitDecoratorMetadata": true,
@@ -8,7 +8,6 @@
           "allowSyntheticDefaultImports": true,
           "target": "ES2021",
           "sourceMap": true,
-          "outDir": "./build",
           "incremental": true,
           "skipLibCheck": true,
           "strictNullChecks": false,
@@ -17,11 +16,10 @@
           "forceConsistentCasingInFileNames": false,
           "noFallthroughCasesInSwitch": false,
           "resolveJsonModule": true,
-          "esModuleInterop": true,
-          "baseUrl": "./",
-          "paths": {
-               "~/*": ["src/*"]
-          }
+          "rootDir": "src",
+          "outDir": "build",
+          // "baseUrl": "./",
+          "paths": {}
      },
      "include": ["src/**/*", "src/**/*.json"],
      "exclude": ["node_modules", "**/*.spec.ts"]

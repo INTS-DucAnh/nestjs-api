@@ -1,6 +1,6 @@
-import { BaseEntity } from 'src/common';
 import { Entity, ManyToOne } from 'typeorm';
-import { UserEntity } from '~/modules/user/entity/user.entity';
+import { BaseEntity } from '../../../common';
+import { UserEntity } from '../../user/entity/user.entity';
 
 @Entity({ name: 'post' })
 export class PostEntity extends BaseEntity {

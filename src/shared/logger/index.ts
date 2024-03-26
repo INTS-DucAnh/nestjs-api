@@ -1,5 +1,6 @@
-import winston, { LoggerOptions } from 'winston';
-import Transport from 'winston-transport';
+import { LoggerOptions } from 'winston';
+import * as winston from 'winston';
+import * as Transport from 'winston-transport';
 import 'winston-daily-rotate-file';
 import { LoggerConfigurations } from './config';
 import { LogstashTransport } from './transport';
