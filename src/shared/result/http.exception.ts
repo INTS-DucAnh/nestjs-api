@@ -1,11 +1,8 @@
-import { HttpException, HttpStatus } from "@nestjs/common";
-import { ResultError } from "../types";
+import { HttpException } from '@nestjs/common';
+import { ResultError } from '../types';
 
 export class HttpError extends HttpException {
-     constructor(
-          public error: ResultError,
-          status: HttpStatus,
-     ) {
-          super({ message: error.message }, status);
+     constructor(public err: ResultError) {
+          super({ message: err.message, code: err.code, status: err.status }, err.status);
      }
 }

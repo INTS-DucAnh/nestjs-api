@@ -5,10 +5,10 @@ export class CreateUserBody {
      name: string;
 
      @IsNotEmpty()
-     age: number
-     
+     age: number;
+
      @IsNotEmpty()
-     email:string
+     email: string;
 
      @IsNotEmpty()
      role: string;
