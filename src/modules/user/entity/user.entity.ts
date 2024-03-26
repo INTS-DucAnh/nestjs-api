@@ -1,7 +1,7 @@
-import { BaseEntity, RoleEnum } from 'src/common';
 import { BeforeInsert, BeforeUpdate, Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 import * as bcrypt from 'bcrypt';
-import { PostEntity } from '~/modules/post/entity/post.entity';
+import { PostEntity } from '../../post/entity/post.entity';
+import { BaseEntity, RoleEnum } from '../../../common';
 
 @Entity({ name: 'user' })
 export class UserEntity extends BaseEntity {

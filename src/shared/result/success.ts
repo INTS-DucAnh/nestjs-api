@@ -1,4 +1,4 @@
-import { HttpStatus } from 'src/common';
+import { HttpStatus } from '../../common';
 import { ResultSuccess } from '../types';
 
 export const ok = (data: any, message?: string): ResultSuccess => {

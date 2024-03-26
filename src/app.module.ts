@@ -10,9 +10,13 @@ import { withCache } from './configs';
 import { AuthModule } from './modules/auth/auth.module';
 import { RequestInitialization } from './shared/middleware/request.Initialization';
 import { MailModule } from './modules/mail/mail.module';
+import { MailerModule } from '@nestjs-modules/mailer';
+import { MailConfig } from './configs/mail.config';
+import { PugAdapter } from '@nestjs-modules/mailer/dist/adapters/pug.adapter';
 
 @Module({
      imports: [
+          MailerModule.forRootAsync(MailConfig),
           TypeOrmModule.forRoot(withCache),
           UserModule,
           CategoryModule,

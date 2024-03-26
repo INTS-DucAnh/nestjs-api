@@ -1,15 +1,16 @@
 import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nestjs/common';
 import { Observable, map } from 'rxjs';
-import { HttpStatus } from 'src/common';
 import { Result, ResultError, ResultSuccess, TResponse } from '../types';
 import logger from '../logger';
+import { Request } from 'express';
+import { HttpStatus } from '../../common';
 
 @Injectable()
 export class HandleResponse implements NestInterceptor {
      intercept(context: ExecutionContext, next: CallHandler): Observable<any> | Promise<Observable<any>> {
           return next.handle().pipe(
                map((data: Result): TResponse => {
-                    const request = context.switchToHttp().getRequest();
+                    const request: Request = context.switchToHttp().getRequest();
                     let responseData: any;
                     const status: HttpStatus = data.status ?? HttpStatus.BAD_REQUEST;
 
@@ -26,6 +27,7 @@ export class HandleResponse implements NestInterceptor {
                          responseData = {
                               status: resultSuccess.status,
                               code: resultSuccess.code,
+                              message: resultSuccess.message,
                               result: { ...resultSuccess.data },
                          };
                     }
